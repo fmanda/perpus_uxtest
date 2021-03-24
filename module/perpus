@@ -6,6 +6,8 @@ const utils = require('./utils');
 
 async function dologin(page, cfg){
   try {
+
+    utils.log(cfg.baseurl + '/' + cfg.user);
     await page.goto( cfg.baseurl + '/' + cfg.user, { waitUntil: 'networkidle2' });
     // await utils.autoScroll(page);
 
@@ -126,8 +128,11 @@ async function doReadCollection(page, collurl){
 
 
 
-    // var borrow = await page.waitForXPath("//a[contains(., 'Pinjam Ebook')]" ,{timeout : 3000})
+    var btnread = await page.waitForXPath("//a[contains(., 'Baca Buku')]" ,{timeout : 3000})
+    if (btnread) await btnread.click();
+    utils.log('Done');
 
+    await sleep(1000);
 
 
   } catch (error) {

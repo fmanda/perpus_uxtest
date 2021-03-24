@@ -24,38 +24,67 @@ console.log('\x1b[0m');
 console.log('Your Config.json : ');
 console.log(JSON.stringify(cfg));
 
+// var loop = 0;
+//
 
-try {
-	(async () => {
-    console.log('Starting...');
-    console.log('');
 
-		const browser = await puppeteer.launch({
-			headless: false,  /*userDataDir: newchromeprofile,executablePath: chromepath*/
-      defaultViewport: null,
-      args: ['--start-maximized']
-      //,args:['--proxy-server=' + cfg.argproxy]
-		})
-		const page = await browser.newPage()
-		await page.setViewport({ width: 0, height: 0 });
-
-    await perpus.dologin(page, cfg);
-
-    // await page.goto( cfg.baseurl + '/pustaka' , { waitUntil: 'networkidle2' });
-
-    // await perpus.doReturnAll(page);
-
-    for (var product of cfg.products){
-      // reset baseurl
-      // await page.goto( cfg.baseurl + '/pustaka', { waitUntil: 'networkidle2' });
-      // await perpus.doSearch(page, product.keyword);
+(async () => {
+  var loop = 0
+  try{
+    while (loop < 10){
+      await loop++;
+      await test(loop);
     }
+  } catch(err){
+    utils.error(err);
+  }
+})()
 
-    //go to base url first, idk we can direct access coll url    
-    await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya');
-	})()
-} catch (err) {
-	console.error(err)
+
+
+async function test(intloop){
+  try {
+  	// (async () => {
+      const browser = await puppeteer.launch({
+        headless: false,  /*userDataDir: newchromeprofile,executablePath: chromepath*/
+        defaultViewport: null,
+        args: ['--start-maximized']
+        //,args:['--proxy-server=' + cfg.argproxy]
+      })
+      try{
+        utils.infoheader('Starting Test #' + intloop.toString());
+
+    		const page = await browser.newPage()
+    		await page.setViewport({ width: 0, height: 0 });
+
+        utils.log('Login with User : ' + cfg.user);
+        await perpus.dologin(page, cfg);
+
+        // await page.goto( cfg.baseurl + '/pustaka' , { waitUntil: 'networkidle2' });
+
+        // await perpus.doReturnAll(page);
+
+        for (var product of cfg.products){
+          // reset baseurl
+          utils.log('Searching Product : ' + product.keyword);
+          await page.goto( cfg.baseurl + '/pustaka', { waitUntil: 'networkidle2' });
+          await perpus.doSearch(page, product.keyword);
+        }
+
+        //go to base url first, idk we can direct access coll url
+        utils.log('Read 1st book from collection');
+        await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya');
+
+      } catch(err) {
+        utils.error(err.message);
+      } finally {
+        utils.success('closing browser ' + intloop.toString());
+        await browser.close();
+      }
+  	// })()
+  } catch (err) {
+  	console.error(err)
+  }
 }
 
 
