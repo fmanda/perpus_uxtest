@@ -1,0 +1,10 @@
+{
+  "baseurl" : "https://perpuskita.my.id" ,
+  "user" : "30400976",
+  "password" : "30400976" ,
+  "products" : [
+    {"keyword" : "orang hebat"},
+    {"keyword" : "lotus"},
+    {"keyword" : "siap"}
+  ]
+}
