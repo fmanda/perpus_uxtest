@@ -7,8 +7,8 @@ const utils = require('./utils');
 async function dologin(page, cfg){
   try {
 
-    utils.log(cfg.baseurl + '/' + cfg.user);
-    await page.goto( cfg.baseurl + '/' + cfg.user, { waitUntil: 'networkidle2' });
+    // utils.log(cfg.baseurl + '/' + cfg.user);
+    // await page.goto( cfg.baseurl + '/' + cfg.user, { waitUntil: 'networkidle2' });
     // await utils.autoScroll(page);
 
     var dropdown = await page.waitForSelector('a.nav-link.icon.text-center');
@@ -44,25 +44,24 @@ async function dologin(page, cfg){
   }
 }
 
-async function doReturnAll(page, keyword){
+async function doReturnAll(page, url){
   try {
     //back to base url first
     // var borrow = await page.waitForXPath("//a[contains(., 'Peminjaman Saya')]" ,{timeout : 3000});
     // var href = await page.$eval("div.item-card2-icons >a", (elm) => elm.href);
     // await book.click();
     // await utils.log(href);
-    // await page.goto( href , { waitUntil: 'networkidle2' });
+    await page.goto( url , { waitUntil: 'networkidle2' });
     // await borrow.click();
-    await sleep(500);
-
+    // await sleep(1000);
     var i = 0;
     while (i<10) {
       try{
         var btn = await page.waitForXPath("//button[contains(., 'Kembalikan')]" ,{timeout : 1000});
-        // if (!btn) break;
-        await sleep(1000);
+        if (!btn) break;
+        // await sleep(2000);
         await btn.click();
-
+        await sleep(500);
 
         var btn = await page.waitForXPath("//button[contains(., 'Ya')]" ,{timeout : 3000});
         await btn.click();
@@ -88,9 +87,14 @@ async function doSearch(page, keyword){
     // await sleep(1000)
 
     await page.$eval('#buku_cari', (el, param) => el.value = param, keyword);
-    var btn = await page.$eval("button.btn.ripple", (elm) => elm.href);
-    if (btn) btn.click();
+    await sleep(500);
+    await page.type('#buku_cari',String.fromCharCode(13));;
 
+    // not working
+    // var btn = await page.$eval("button.btn.ripple", (elm) => elm.href);
+    // if (btn) btn.click();
+
+    await sleep(5000);
     await page.waitForSelector('div.tab-content.Marketplace');
     await utils.autoScroll(page);
 
@@ -124,15 +128,11 @@ async function doReadCollection(page, collurl){
 
     await page.click('#button_koleksi_saya');
 
-
-
-
-
     var btnread = await page.waitForXPath("//a[contains(., 'Baca Buku')]" ,{timeout : 3000})
     if (btnread) await btnread.click();
     utils.log('Done');
 
-    await sleep(1000);
+    await sleep(5000);
 
 
   } catch (error) {
