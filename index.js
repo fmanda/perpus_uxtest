@@ -162,6 +162,7 @@ async function test(intloop){
         utils.log('Read 1st book from collection');
         await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya', browser);
         data.tRead = (new Date) - tm;
+        data.sRead = 'success';
 
 
 
