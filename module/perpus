@@ -119,20 +119,38 @@ async function doSearch(page, keyword){
 }
 
 
-async function doReadCollection(page, collurl){
+async function doReadCollection(page, collurl, browser){
   try {
     //back to base url first
-    utils.log('Read From Collection ' + collurl);
+    utils.log('Read From Peminjaman ' + collurl);
 
     await page.goto( collurl, { waitUntil: 'networkidle2' });
+    await page.click('#button_peminjaman');
 
-    await page.click('#button_koleksi_saya');
+    await sleep(1000);
 
-    var btnread = await page.waitForXPath("//a[contains(., 'Baca Buku')]" ,{timeout : 3000})
-    if (btnread) await btnread.click();
+
+
+
+
+    var btnread = await page.waitForXPath("//button[contains(., 'Baca Buku')]" ,{timeout : 3000})
+    // utils.log(btnread);
+
+    const pageTarget = page.target();
+    if (btnread) {
+      // utils.log('button e ono jon');
+      await btnread.click();
+    }
+
+    const newTarget = await browser.waitForTarget(target => target.opener() === pageTarget);
+    const newPage = await newTarget.page();
+
+    await newPage.waitForSelector('#pagesContainer_documentViewer_arrowright');
+    await sleep(1000);
+
     utils.log('Done');
 
-    await sleep(5000);
+
 
 
   } catch (error) {

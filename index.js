@@ -135,9 +135,7 @@ async function test(intloop){
         data.sLogin = 'success';
         data.tLogin = (new Date) - tm;
 
-
-        // await page.goto( cfg.baseurl + '/pustaka' , { waitUntil: 'networkidle2' });
-
+        //block here
         tm = new Date();
         await perpus.doReturnAll(page, cfg.baseurl + '/buku/peminjaman_saya');
         data.sReturn = 'success';
@@ -157,12 +155,15 @@ async function test(intloop){
         }
         data.sSearch = 'success';
         data.tSearch = ((new Date) - tm) / cfg.products.length;
+        //to  here
 
         tm = new Date();
         //go to base url first, idk we can direct access coll url
         utils.log('Read 1st book from collection');
-        await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya');
+        await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya', browser);
         data.tRead = (new Date) - tm;
+
+
 
       } catch(err) {
         utils.error(err.message);
