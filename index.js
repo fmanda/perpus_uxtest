@@ -28,9 +28,8 @@ console.log(JSON.stringify(cfg));
 // var loop = 0;
 //
 const headcsv = [
-  {id: 'iteration', title: 'iteration'},
   {id: 'startTime', title: 'startTime'},
-  {id: 'endTime', title: 'endTime'},
+  {id: 'iteration', title: 'iteration'},
   {id: 'sLanding', title: 'slanding'},
   {id: 'tLanding', title: 'tlanding'},
   {id: 'sLogin', title: 'slogin'},
@@ -44,16 +43,26 @@ const headcsv = [
   {id: 'tTotal', title: 'tTotal'},
 ];
 
+const dataheadcsv = {
+  startTime: 'startTime',
+  iteration: 'iteration',
+  sLanding: 'sLanding',
+  tLanding: 'tLanding',
+  sLogin: 'sLogin',
+  tLogin: 'tLogin',
+  sReturn: 'sReturn',
+  tReturn: 'tReturn',
+  sSearch: 'sSearch',
+  tSearch: 'tSearch',
+  sRead: 'sRead',
+  tRead: 'tRead',
+  tTotal: 'tTotal'
+};
+
 var logname = cfg.pc + dateFormat(new Date(), "yyyymmdd") + '.csv';
 
 const dt = new Date();
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const csvheader = createCsvWriter({
-  path:  logname,
-  header: headcsv,
-  append: false
-});
-
 const csvWriter = createCsvWriter({
   path:  logname,
   header: headcsv,
@@ -61,7 +70,7 @@ const csvWriter = createCsvWriter({
 });
 
 //write header
-// csvheader.writeRecords([]).then(()=> utils.log('Header CSV Appended'));
+csvWriter.writeRecords([dataheadcsv]).then(()=> utils.log('Header CSV Appended'));
 
 const maxloop = cfg.maxloop;
 
@@ -90,9 +99,8 @@ async function test(intloop){
       })
 
       var data = {
-        iteration : intloop,
         startTime : null,
-        endTime : null,
+        iteration : intloop,
         sLanding : 'failed',
         tLanding : null,
         sLogin : 'failed',
@@ -148,7 +156,7 @@ async function test(intloop){
           }
         }
         data.sSearch = 'success';
-        data.tSearch = (new Date) - tm;
+        data.tSearch = ((new Date) - tm) / cfg.products.length;
 
         tm = new Date();
         //go to base url first, idk we can direct access coll url
@@ -163,13 +171,11 @@ async function test(intloop){
         await browser.close();
 
         tm = new Date();
-        data.endTime = tm;
-        data.tTotal = data.endTime - data.startTime;
-
+        // data.endTime = tm;
+        data.tTotal = tm - data.startTime;
 
         //dateFormat
         data.startTime = dateFormat(data.startTime, "yyyy-mm-dd h:MM:ss");
-        data.endTime = dateFormat(data.endTime, "yyyy-mm-dd h:MM:ss");
         await csvWriter.writeRecords([data]).then(()=> utils.log('The CSV file was written successfully'));
 
       }

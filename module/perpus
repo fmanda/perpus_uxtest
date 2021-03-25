@@ -96,7 +96,7 @@ async function doSearch(page, keyword){
 
     await sleep(5000);
     await page.waitForSelector('div.tab-content.Marketplace');
-    await utils.autoScroll(page);
+    // await utils.autoScroll(page);
 
     var href = await page.$eval("div.item-card2-icons >a", (elm) => elm.href);
 
@@ -104,7 +104,7 @@ async function doSearch(page, keyword){
 
     await utils.log(href);
     await page.goto( href , { waitUntil: 'networkidle2' });
-    await utils.autoScroll(page);
+    // await utils.autoScroll(page);
     // await sleep(1000)
 
     var borrow = await page.waitForXPath("//a[contains(., 'Pinjam Ebook')]" ,{timeout : 3000})
