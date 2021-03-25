@@ -2,6 +2,7 @@
   "baseurl" : "https://perpuskita.my.id" ,
   "user" : "30400976",
   "password" : "30400976" ,
+  "maxloop" : 1,
   "products" : [
     {"keyword" : "orang hebat"},
     {"keyword" : "lotus"},

@@ -26,12 +26,12 @@ console.log(JSON.stringify(cfg));
 
 // var loop = 0;
 //
-
+const maxloop = cfg.maxloop;
 
 (async () => {
   var loop = 0
   try{
-    while (loop < 10){
+    while (loop < maxloop){
       await loop++;
       await test(loop);
     }
@@ -62,7 +62,8 @@ async function test(intloop){
 
         // await page.goto( cfg.baseurl + '/pustaka' , { waitUntil: 'networkidle2' });
 
-        // await perpus.doReturnAll(page);
+        await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya');
+        await perpus.doReturnAll(page);
 
         for (var product of cfg.products){
           // reset baseurl

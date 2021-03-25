@@ -47,24 +47,22 @@ async function dologin(page, cfg){
 async function doReturnAll(page, keyword){
   try {
     //back to base url first
-    var borrow = await page.waitForXPath("//a[contains(., 'Peminjaman Saya')]" ,{timeout : 3000});
-
-    var href = await page.$eval("div.item-card2-icons >a", (elm) => elm.href);
-
+    // var borrow = await page.waitForXPath("//a[contains(., 'Peminjaman Saya')]" ,{timeout : 3000});
+    // var href = await page.$eval("div.item-card2-icons >a", (elm) => elm.href);
     // await book.click();
-
-    await utils.log(href);
-    await page.goto( href , { waitUntil: 'networkidle2' });
-
-
-    await borrow.click();
-    await sleep(1000);
+    // await utils.log(href);
+    // await page.goto( href , { waitUntil: 'networkidle2' });
+    // await borrow.click();
+    await sleep(500);
 
     var i = 0;
-    while (i<4) {
+    while (i<10) {
       try{
-        var btn = await page.waitForXPath("//button[contains(., 'Kembalikan')]" ,{timeout : 3000});
+        var btn = await page.waitForXPath("//button[contains(., 'Kembalikan')]" ,{timeout : 1000});
+        // if (!btn) break;
+        await sleep(1000);
         await btn.click();
+
 
         var btn = await page.waitForXPath("//button[contains(., 'Ya')]" ,{timeout : 3000});
         await btn.click();
@@ -102,12 +100,14 @@ async function doSearch(page, keyword){
 
     await utils.log(href);
     await page.goto( href , { waitUntil: 'networkidle2' });
+    await utils.autoScroll(page);
     // await sleep(1000)
 
     var borrow = await page.waitForXPath("//a[contains(., 'Pinjam Ebook')]" ,{timeout : 3000})
     await borrow.click();
     await sleep(1000);
 
+    await page.waitForXPath("//a[contains(., 'Baca Buku')]" ,{timeout : 3000});
 
   } catch (error) {
     utils.error(error.message);
