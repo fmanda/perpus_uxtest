@@ -94,7 +94,8 @@ async function test(intloop){
       const browser = await puppeteer.launch({
         headless: false,  /*userDataDir: newchromeprofile,executablePath: chromepath*/
         defaultViewport: null,
-        args: ['--start-maximized']
+        //args: ['--start-maximized']
+        args: ['--window-size=1200,700']
         //,args:['--proxy-server=' + cfg.argproxy]
       })
 
