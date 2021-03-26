@@ -11,32 +11,33 @@ async function dologin(page, cfg){
     // await page.goto( cfg.baseurl + '/' + cfg.user, { waitUntil: 'networkidle2' });
     // await utils.autoScroll(page);
 
-    var dropdown = await page.waitForSelector('a.nav-link.icon.text-center');
+    // var dropdown = await page.waitForSelector('a.nav-link.icon.text-center');
+    var dropdown = await page.waitForSelector('div.dropdown.d-md-flex.profile-1');
     await dropdown.click();
     await sleep(100);
 
     var login = await page.waitForXPath("//a[contains(., 'Login')]" ,{timeout : 3000})
 
-		if (login) {
-  		try{
-        login.click();
-        await sleep(100);
+    if (login) {
+  	try{
+           login.click();
+           await sleep(100);
 
-        await page.$eval('#username', (el, param) => el.value = param, cfg.user);
-        await page.$eval('#password_ja', (el, param) => el.value = param, cfg.password);
-        // await page.$eval('#formLogin', form => form.submit());
+           await page.$eval('#username', (el, param) => el.value = param, cfg.user);
+           await page.$eval('#password_ja', (el, param) => el.value = param, cfg.password);
+           // await page.$eval('#formLogin', form => form.submit());
 
-        // await page.waitFor(100);
-        await sleep(100);
-        await page.click('#btn_login');
+           // await page.waitFor(100);
+           await sleep(100);
+           await page.click('#btn_login');
 
-        // var btn = await page.waitForSelector('#btn_login');
-        // if (btn) btn.click();
-        await page.waitForSelector('i.fe.fe-user');
+           // var btn = await page.waitForSelector('#btn_login');
+           // if (btn) btn.click();
+           await page.waitForSelector('i.fe.fe-user');
 
-  		}catch(err){
-  			utils.error(err.message);
-  		}
+  	}catch(err){
+  	   utils.error(err.message);
+  	}
     }
 
   } catch (error) {
