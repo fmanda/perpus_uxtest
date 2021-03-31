@@ -92,10 +92,10 @@ async function test(intloop){
   try {
   	// (async () => {
       const browser = await puppeteer.launch({
-        headless: false,  /*userDataDir: newchromeprofile,executablePath: chromepath*/
+        headless: false,  /*userDataDir: newchromeprofile,*/
+	executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         defaultViewport: null,
-        //args: ['--start-maximized']
-        args: ['--window-size=1200,700']
+        args: ['--start-maximized']
         //,args:['--proxy-server=' + cfg.argproxy]
       })
 
@@ -136,7 +136,9 @@ async function test(intloop){
         data.sLogin = 'success';
         data.tLogin = (new Date) - tm;
 
-        //block here
+
+        // await page.goto( cfg.baseurl + '/pustaka' , { waitUntil: 'networkidle2' });
+
         tm = new Date();
         await perpus.doReturnAll(page, cfg.baseurl + '/buku/peminjaman_saya');
         data.sReturn = 'success';
@@ -156,16 +158,12 @@ async function test(intloop){
         }
         data.sSearch = 'success';
         data.tSearch = ((new Date) - tm) / cfg.products.length;
-        //to  here
 
         tm = new Date();
         //go to base url first, idk we can direct access coll url
         utils.log('Read 1st book from collection');
-        await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya', browser);
+        await perpus.doReadCollection(page, cfg.baseurl + '/buku/peminjaman_saya');
         data.tRead = (new Date) - tm;
-        data.sRead = 'success';
-
-
 
       } catch(err) {
         utils.error(err.message);
