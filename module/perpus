@@ -11,33 +11,32 @@ async function dologin(page, cfg){
     // await page.goto( cfg.baseurl + '/' + cfg.user, { waitUntil: 'networkidle2' });
     // await utils.autoScroll(page);
 
-    // var dropdown = await page.waitForSelector('a.nav-link.icon.text-center');
-    var dropdown = await page.waitForSelector('div.dropdown.d-md-flex.profile-1');
+    var dropdown = await page.waitForSelector('a.nav-link.icon.text-center');
     await dropdown.click();
     await sleep(100);
 
     var login = await page.waitForXPath("//a[contains(., 'Login')]" ,{timeout : 3000})
 
-    if (login) {
-  	try{
-           login.click();
-           await sleep(100);
+		if (login) {
+  		try{
+        login.click();
+        await sleep(100);
 
-           await page.$eval('#username', (el, param) => el.value = param, cfg.user);
-           await page.$eval('#password_ja', (el, param) => el.value = param, cfg.password);
-           // await page.$eval('#formLogin', form => form.submit());
+        await page.$eval('#username', (el, param) => el.value = param, cfg.user);
+        await page.$eval('#password_ja', (el, param) => el.value = param, cfg.password);
+        // await page.$eval('#formLogin', form => form.submit());
 
-           // await page.waitFor(100);
-           await sleep(100);
-           await page.click('#btn_login');
+        // await page.waitFor(100);
+        await sleep(100);
+        await page.click('#btn_login');
 
-           // var btn = await page.waitForSelector('#btn_login');
-           // if (btn) btn.click();
-           await page.waitForSelector('i.fe.fe-user');
+        // var btn = await page.waitForSelector('#btn_login');
+        // if (btn) btn.click();
+        await page.waitForSelector('i.fe.fe-user');
 
-  	}catch(err){
-  	   utils.error(err.message);
-  	}
+  		}catch(err){
+  			utils.error(err.message);
+  		}
     }
 
   } catch (error) {
@@ -112,7 +111,7 @@ async function doSearch(page, keyword){
     await borrow.click();
     await sleep(1000);
 
-    await page.waitForXPath("//a[contains(., 'Baca Buku')]" ,{timeout : 3000});
+    await page.waitForXPath("//h2[contains(., 'Sukses')]" ,{timeout : 3000});
 
   } catch (error) {
     utils.error(error.message);
@@ -120,38 +119,20 @@ async function doSearch(page, keyword){
 }
 
 
-async function doReadCollection(page, collurl, browser){
+async function doReadCollection(page, collurl){
   try {
     //back to base url first
-    utils.log('Read From Peminjaman ' + collurl);
+    utils.log('Read From Collection ' + collurl);
 
     await page.goto( collurl, { waitUntil: 'networkidle2' });
+
     await page.click('#button_peminjaman');
 
-    await sleep(1000);
-
-
-
-
-
     var btnread = await page.waitForXPath("//button[contains(., 'Baca Buku')]" ,{timeout : 3000})
-    // utils.log(btnread);
-
-    const pageTarget = page.target();
-    if (btnread) {
-      // utils.log('button e ono jon');
-      await btnread.click();
-    }
-
-    const newTarget = await browser.waitForTarget(target => target.opener() === pageTarget);
-    const newPage = await newTarget.page();
-
-    await newPage.waitForSelector('#pagesContainer_documentViewer_arrowright');
-    await sleep(1000);
-
+    if (btnread) await btnread.click();
     utils.log('Done');
 
-
+    await sleep(5000);
 
 
   } catch (error) {
