@@ -93,7 +93,7 @@ async function test(intloop){
   	// (async () => {
       const browser = await puppeteer.launch({
         headless: false,  /*userDataDir: newchromeprofile,*/
-	executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+	executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
         defaultViewport: null,
         args: ['--start-maximized']
         //,args:['--proxy-server=' + cfg.argproxy]

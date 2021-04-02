@@ -11,7 +11,7 @@ async function dologin(page, cfg){
     // await page.goto( cfg.baseurl + '/' + cfg.user, { waitUntil: 'networkidle2' });
     // await utils.autoScroll(page);
 
-    var dropdown = await page.waitForSelector('a.nav-link.icon.text-center');
+    var dropdown = await page.waitForSelector('a.nav-link.icon.text-center', {timeout : 10000});
     await dropdown.click();
     await sleep(100);
 
