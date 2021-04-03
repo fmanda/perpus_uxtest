@@ -52,6 +52,7 @@ async function doReturnAll(page, url){
     // await book.click();
     // await utils.log(href);
     await page.goto( url , { waitUntil: 'networkidle2' });
+    await page.waitForXPath("//button[contains(., 'Kembalikan')]" ,{timeout : 10000});
     // await borrow.click();
     // await sleep(1000);
     var i = 0;

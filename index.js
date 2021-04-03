@@ -59,7 +59,7 @@ const dataheadcsv = {
   tTotal: 'tTotal'
 };
 
-var logname = cfg.pc + dateFormat(new Date(), "yyyymmdd") + '.csv';
+var logname = cfg.pc + '_' + cfg.user + '_' + dateFormat(new Date(), "yyyymmdd") +  '.csv';
 
 const dt = new Date();
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
